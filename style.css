@@ -1,0 +1,472 @@
+/**
+ * Voxel Manager - Main Stylesheet
+ */
+
+/* Updated Toggle Switch Styles */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 25px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 25px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 21px;
+    width: 21px;
+    left: 2px;
+    bottom: 2px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #2271b1;
+}
+
+input:checked + .slider:before {
+    transform: translateX(25px);
+}
+
+td .switch {
+    margin: 0;
+}
+
+/* Table Styling */
+#fields-table td.editable {
+    background-color: rgba(33, 113, 177, 0.03);
+    cursor: pointer;
+}
+
+#fields-table td.editable:hover {
+    background-color: rgba(33, 113, 177, 0.08);
+}
+
+#fields-table td.non-editable {
+    background-color: #f8f8f8;
+    color: #666;
+}
+
+#fields-table tr {
+    background-color: #fff !important;
+}
+
+#fields-table thead th {
+    background-color: #fff;
+    border-bottom: 2px solid #e5e5e5;
+}
+
+/* Button Styling */
+#copy-json {
+    background: #2271b1;
+    color: #fff;
+    border: none;
+    padding: 4px 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#copy-json:hover {
+    background: #135e96;
+}
+
+/* Modal Styling */
+.ipc-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+}
+
+.ipc-modal.visible {
+    display: flex;
+}
+
+.ipc-modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    max-width: 90%;
+}
+
+.close-modal {
+    float: right;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.submit-group {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.vbm-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.vbm-actions {
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.jconfirm-box {
+    width: 210px;
+}
+
+/* General Admin Styles */
+.wrap.vbm-page {
+    max-width: 100%;
+    margin-right: 20px;
+}
+
+/* Module Containers */
+.vbm-module-container {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.vbm-card {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    box-shadow: 0 1px 1px rgba(0,0,0,.04);
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/**
+ * Bulk Manager Styles
+ */
+.vbm-bulk-manager .vbm-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+
+.vbm-bulk-manager .vbm-filter {
+    display: flex;
+    flex-direction: column;
+}
+
+.vbm-bulk-manager .vbm-filter label {
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.vbm-bulk-manager .vbm-filter select,
+.vbm-bulk-manager .vbm-filter input {
+    min-width: 200px;
+}
+
+.vbm-bulk-manager td.editable {
+    cursor: pointer;
+}
+
+.vbm-bulk-manager td.editable:hover {
+    background-color: #f3f3f3;
+}
+
+.vbm-bulk-manager td input.inline-edit {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+#vbm-status-message {
+    margin-top: 15px;
+    padding: 8px 12px;
+    background: #f0f0f1;
+    border-left: 4px solid #72aee6;
+    display: none;
+}
+
+#vbm-status-message.notice-success {
+    border-left-color: #00a32a;
+}
+
+#vbm-status-message.notice-error {
+    border-left-color: #d63638;
+}
+
+.vbm-bulk-manager .vbm-table-container {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+.vbm-bulk-manager table.dataTable thead th {
+    position: relative;
+    padding-right: 25px;
+}
+
+.vbm-bulk-manager table.dataTable thead th.sorting:after,
+.vbm-bulk-manager table.dataTable thead th.sorting_asc:after,
+.vbm-bulk-manager table.dataTable thead th.sorting_desc:after {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    display: block;
+    opacity: 0.5;
+}
+
+/* Adjust Bulk Manager table to take full width */
+.vbm-bulk-manager .vbm-table-container table {
+    width: 100%;
+    table-layout: auto;
+}
+
+/**
+ * Exclude Styles Module CSS
+ */
+.vbm-exclude-styles pre {
+    background-color: #f6f7f7;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.vbm-exclude-styles code {
+    background-color: #f6f7f7;
+    border: 1px solid #e8e8e8;
+    border-radius: 3px;
+    padding: 2px 5px;
+    font-family: monospace;
+    font-size: 14px;
+}
+
+.vbm-exclude-styles ol {
+    margin-left: 20px;
+    list-style-type: decimal;
+}
+
+.vbm-exclude-styles li {
+    margin-bottom: 10px;
+}
+
+.vbm-exclude-styles table {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.vbm-exclude-styles th, 
+.vbm-exclude-styles td {
+    padding: 10px;
+}
+
+.vbm-exclude-styles h3 {
+    margin-top: 25px;
+    margin-bottom: 10px;
+}
+
+/* Standardized Module Page Layout */
+.vbm-module-page {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Standardized Table Styling for Module Pages */
+.vbm-module-page table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: auto;
+}
+
+.vbm-module-page table th,
+.vbm-module-page table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #e5e5e5;
+}
+
+/* Adjust filter and form elements consistently */
+.vbm-module-page select,
+.vbm-module-page input[type="text"],
+.vbm-module-page input[type="checkbox"] {
+    min-width: 200px;
+    margin: 5px 0;
+}
+
+/* Additional DataTables Styling */
+.dataTables_wrapper .dataTables_filter {
+    float: none;
+    margin-bottom: 15px;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    margin-left: 0.5em;
+    width: 200px;
+    padding: 5px;
+}
+
+/* Hide default search input since we have custom filter */
+#vbm-fields-table_filter {
+    display: none;
+}
+
+/* Style for inline edit inputs */
+.inline-edit {
+    width: 100%;
+    padding: 5px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+}
+
+/* Status message styling */
+#vbm-status-message {
+    margin-top: 15px;
+    padding: 8px 12px;
+    background: #f0f0f1;
+    border-left: 4px solid #72aee6;
+    display: none;
+}
+
+#vbm-status-message.notice-success {
+    border-left-color: #00a32a;
+}
+
+#vbm-status-message.notice-error {
+    border-left-color: #d63638;
+}
+
+/* Spinner in status messages */
+#vbm-status-message .spinner {
+    float: none;
+    margin: 0 5px 0 0;
+    vertical-align: middle;
+}
+
+/* DataTable header sorting indicators */
+table.dataTable thead th.sorting:after,
+table.dataTable thead th.sorting_asc:after,
+table.dataTable thead th.sorting_desc:after {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    display: block;
+    opacity: 0.5;
+}
+
+/**
+ * Scoring Module Styles
+ */
+.vbm-scoring-status {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+
+.vbm-scoring-list {
+    list-style: disc;
+    margin-left: 20px;
+}
+
+.vbm-scoring-list li {
+    padding: 5px 0;
+}
+
+.vbm-scoring-list .dashicons-yes-alt {
+    color: #00a32a;
+}
+
+.vbm-scoring-list .dashicons-warning {
+    color: #dba617;
+}
+
+.vbm-scoring-actions {
+    margin-bottom: 25px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 4px;
+}
+
+.vbm-scoring-actions .button-group {
+    margin-bottom: 10px;
+}
+
+#vbm-scoring-status-message {
+    margin-top: 15px;
+    padding: 8px 12px;
+    background: #f0f0f1;
+    border-left: 4px solid #72aee6;
+    display: none;
+}
+
+#vbm-scoring-status-message.notice-success {
+    border-left-color: #00a32a;
+}
+
+#vbm-scoring-status-message.notice-error {
+    border-left-color: #d63638;
+}
+
+.vbm-scoring-instructions {
+    margin-top: 30px;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+}
+
+.vbm-scoring-instructions h4 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.vbm-scoring-instructions code {
+    background: #f6f7f7;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
