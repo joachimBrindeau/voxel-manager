@@ -1,0 +1,125 @@
+/* Claims List Widget Styles */
+.claim-requests-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    table-layout: fixed;
+}
+
+.claim-requests-table th, 
+.claim-requests-table td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.claim-request-item {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.claim-request-item:hover {
+    background-color: #f5f5f5;
+}
+
+/* Column widths */
+.date-column {
+    width: 15%;
+}
+
+.post-column {
+    width: 55%;
+}
+
+.status-column {
+    width: 15%;
+    text-align: center;
+}
+
+.id-column {
+    width: 15%;
+    text-align: right;
+}
+
+/* Status tag styling */
+.status-tag {
+    display: inline-block;
+    max-width: 100px;
+    width: 100%;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 4px;
+    font-weight: 500;
+    font-size: 14px;
+    margin: 0 auto;
+}
+
+.status-approved {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.status-rejected {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+/* No claims message styling */
+.no-claims-container {
+    background-color: #fff8f8;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    padding: 20px;
+    margin: 20px 0;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.no-claims-message {
+    color: #721c24;
+    font-size: 16px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Error message styling */
+.claim-error-container {
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    border-radius: 6px;
+    padding: 15px;
+    margin: 20px 0;
+}
+
+.error-message {
+    color: #721c24;
+    font-weight: 500;
+    margin: 0;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .date-column {
+        width: 20%;
+    }
+    .post-column {
+        width: 40%;
+    }
+    .status-column {
+        width: 20%;
+    }
+    .id-column {
+        width: 20%;
+    }
+    .no-claims-message {
+        font-size: 14px;
+    }
+}

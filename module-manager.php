@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
+// Include version management file
+require_once VBM_PLUGIN_DIR . 'module-versions.php';
+
 /**
  * Abstract base class for all modules
  */
@@ -260,7 +263,9 @@ function vbm_get_available_modules() {
         'api' => 'API Access',
         'bulk_manager' => 'Bulk Field Manager',
         'exclude_styles' => 'Style Manager',
-        'scoring' => 'Post Scoring'
+        'scoring' => 'Post Scoring',
+        'widgets' => 'Additional Widgets',
+        'misc-enhancements' => 'Misc Enhancements'
     ];
 }
 
@@ -361,7 +366,9 @@ function vbm_get_module_dependencies() {
         'api' => [],
         'bulk_manager' => [],
         'exclude_styles' => [],
-        'scoring' => []
+        'scoring' => [],
+        'widgets' => [],
+        'misc-enhancements' => []
     ];
 }
 
@@ -393,9 +400,7 @@ function vbm_render_module_manager_page() {
         <div class="notice notice-success"><p>Features updated successfully!</p></div>
         <?php endif; ?>
         
-        <div class="notice notice-info">
-            <p>Enable or disable plugin features as needed.</p>
-        </div>
+        <p>Enable or disable plugin features as needed.</p>
         
         <form method="post" action="">
             <?php wp_nonce_field('vbm_update_features'); ?>
@@ -417,13 +422,19 @@ function vbm_render_module_manager_page() {
                         $module = $loader->get_module($id);
                         if ($module) {
                             $is_active = in_array($id, $active_modules);
+                            $version_status = vbm_get_module_version($id);
+                            $version_class = strtolower(str_replace(' ', '-', $version_status));
                             ?>
                             <tr>
                                 <td>
                                     <strong><?php echo esc_html($name); ?></strong>
                                 </td>
                                 <td><?php echo esc_html($module->get_description()); ?></td>
-                                <td><?php echo esc_html($module->get_version()); ?></td>
+                                <td>
+                                    <span class="version-status <?php echo esc_attr($version_class); ?>">
+                                        <?php echo esc_html($version_status); ?>
+                                    </span>
+                                </td>
                                 <td>
                                     <label class="switch">
                                         <input type="checkbox" name="features[]" value="<?php echo esc_attr($id); ?>" <?php checked($is_active); ?>>

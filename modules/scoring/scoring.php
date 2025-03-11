@@ -345,153 +345,135 @@ class VBM_Scoring_Module extends VBM_Module {
             $potential_max_scores[$post_type] = $this->calculate_potential_max_score($post_type);
         }
         ?>
-        <div class="wrap vbm-module-page">
-            <div class="vbm-card">
-                <h2><?php _e('Post Scoring Module', 'voxel-bulk-manager'); ?></h2>
-                
-                <!-- Tab Navigation -->
-                <nav class="nav-tab-wrapper">
-                    <a href="#cpt-settings" class="nav-tab nav-tab-active"><?php _e('CPT Settings', 'voxel-bulk-manager'); ?></a>
-                    <a href="#field-settings" class="nav-tab"><?php _e('Field Settings', 'voxel-bulk-manager'); ?></a>
-                </nav>
-                
-                <!-- Tab Content: CPT Settings -->
-                <div id="cpt-settings" class="tab-content active">
-                    <div class="vbm-scoring-actions">
-                        <h3><?php _e('Actions', 'voxel-bulk-manager'); ?></h3>
-                        <div class="button-group">
-                            <button id="recalculate-scores" class="button button-primary">
-                                <?php _e('Recalculate All Scores', 'voxel-bulk-manager'); ?>
-                            </button>
-                        </div>
-                        <div id="vbm-scoring-status-message"></div>
-                    </div>
-                    
-                    <div class="vbm-target-score-manager">
-                        <h3><?php _e('Target Score Manager', 'voxel-bulk-manager'); ?></h3>
-                        <p><?php _e('Set a target score for each post type. When calculating post scores, the system will use this target as 100%.', 'voxel-bulk-manager'); ?></p>
-                        
-                        <div class="vbm-table-container">
-                            <table id="vbm-target-scores-table" class="wp-list-table widefat fixed striped">
-                                <thead>
-                                    <tr>
-                                        <th><?php _e('Post Type', 'voxel-bulk-manager'); ?></th>
-                                        <th><?php _e('Has Score Field', 'voxel-bulk-manager'); ?></th>
-                                        <th><?php _e('Potential Maximum', 'voxel-bulk-manager'); ?></th>
-                                        <th><?php _e('Target Score', 'voxel-bulk-manager'); ?></th>
-                                        <th><?php _e('Actions', 'voxel-bulk-manager'); ?></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($post_types as $post_type => $post_type_data): ?>
-                                        <?php 
-                                        $has_score = isset($post_types_with_score[$post_type]);
-                                        $potential_max = $potential_max_scores[$post_type];
-                                        $target = isset($target_scores[$post_type]) ? $target_scores[$post_type] : 0;
-                                        ?>
-                                        <tr data-post-type="<?php echo esc_attr($post_type); ?>">
-                                            <td><?php echo esc_html($post_type_data['settings']['singular'] ?? $post_type); ?></td>
-                                            <td>
-                                                <?php if ($has_score): ?>
-                                                    <span class="dashicons dashicons-yes-alt" style="color: #00a32a;"></span>
-                                                <?php else: ?>
-                                                    <span class="dashicons dashicons-no-alt" style="color: #d63638;"></span> 
-                                                    <span class="description"><?php _e('Add a "score" field to enable scoring', 'voxel-bulk-manager'); ?></span>
-                                                <?php endif; ?>
-                                            </td>
-                                            <td><?php echo esc_html($potential_max); ?></td>
-                                            <td>
-                                                <?php if ($has_score): ?>
-                                                    <input type="number" class="target-score-input" value="<?php echo esc_attr($target); ?>" min="1" step="1">
-                                                <?php else: ?>
-                                                    -
-                                                <?php endif; ?>
-                                            </td>
-                                            <td>
-                                                <?php if ($has_score): ?>
-                                                    <button class="button update-target-score"><?php _e('Update', 'voxel-bulk-manager'); ?></button>
-                                                <?php else: ?>
-                                                    -
-                                                <?php endif; ?>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <div id="vbm-target-score-status-message"></div>
-                    </div>
-                </div>
-                
-                <!-- Tab Content: Field Settings -->
-                <div id="field-settings" class="tab-content" style="display: none;">
-                    <div class="vbm-scoring-fields-manager">
-                        <h3><?php _e('Field Scoring Manager', 'voxel-bulk-manager'); ?></h3>
-                        <p><?php _e('Assign score values to fields. These values will be added to the post\'s score when the field is filled.', 'voxel-bulk-manager'); ?></p>
-                        
-                        <div class="vbm-filters">
-                            <label for="post-type-filter"><?php _e('Post Type:', 'voxel-bulk-manager'); ?></label>
-                            <select id="post-type-filter">
-                                <option value=""><?php _e('All Post Types', 'voxel-bulk-manager'); ?></option>
-                                <?php foreach ($post_types as $post_type => $data): ?>
-                                    <option value="<?php echo esc_attr($post_type); ?>">
-                                        <?php echo esc_html($data['settings']['singular'] ?? $post_type); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                        
-                        <div class="vbm-table-container">
-                            <table id="vbm-scoring-table" class="wp-list-table widefat fixed striped">
-                                <thead>
-                                    <tr>
-                                        <th><?php _e('Post Type', 'voxel-bulk-manager'); ?></th>
-                                        <th><?php _e('Field Key', 'voxel-bulk-manager'); ?></th>
-                                        <th><?php _e('Label', 'voxel-bulk-manager'); ?></th>
-                                        <th><?php _e('Score', 'voxel-bulk-manager'); ?></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php 
-                                    foreach ($post_types as $post_type => $post_type_data):
-                                        if (empty($post_type_data['fields'])) continue;
-                                        
-                                        foreach ($post_type_data['fields'] as $field):
-                                            // Skip UI step, HTML fields, and score field
-                                            if (in_array($field['type'], ['ui-step', 'ui-html']) || $field['key'] === 'score') continue;
-                                            
-                                            // Extract score from CSS class
-                                            $score = $this->extract_score_from_css_class($field['css_class'] ?? '');
-                                    ?>
-                                    <tr data-post-type="<?php echo esc_attr($post_type); ?>" data-field-key="<?php echo esc_attr($field['key']); ?>">
-                                        <td><?php echo esc_html($post_type_data['settings']['singular'] ?? $post_type); ?></td>
-                                        <td><?php echo esc_html($field['key']); ?></td>
-                                        <td><?php echo esc_html($field['label'] ?? ''); ?></td>
-                                        <td class="editable" data-field-property="score"><?php echo esc_html($score); ?></td>
-                                    </tr>
-                                    <?php 
-                                        endforeach;
-                                    endforeach; 
-                                    ?>
-                                </tbody>
-                            </table>
-                        </div>
-                        
-                        <div id="vbm-field-score-status-message"></div>
-                    </div>
-                </div>
+        <!-- Tab Navigation -->
+        <nav class="nav-tab-wrapper">
+            <a href="#cpt-settings" class="nav-tab nav-tab-active"><?php _e('CPT Settings', 'voxel-bulk-manager'); ?></a>
+            <a href="#field-settings" class="nav-tab"><?php _e('Field Settings', 'voxel-bulk-manager'); ?></a>
+        </nav>
+        
+        <!-- Tab Content: CPT Settings -->
+        <div id="cpt-settings" class="tab-content active">
+            <h3><?php _e('Actions', 'voxel-bulk-manager'); ?></h3>
+            <button id="recalculate-scores" class="button button-primary">
+                <?php _e('Recalculate All Scores', 'voxel-bulk-manager'); ?>
+            </button>
+            <div id="vbm-scoring-status-message"></div>
+            
+            <h3><?php _e('Target Score Manager', 'voxel-bulk-manager'); ?></h3>
+            <p><?php _e('Set a target score for each post type. When calculating post scores, the system will use this target as 100%.', 'voxel-bulk-manager'); ?></p>
+            
+            <table id="vbm-target-scores-table" class="wp-list-table widefat fixed striped">
+                <thead>
+                    <tr>
+                        <th><?php _e('Post Type', 'voxel-bulk-manager'); ?></th>
+                        <th><?php _e('Has Score Field', 'voxel-bulk-manager'); ?></th>
+                        <th><?php _e('Potential Maximum', 'voxel-bulk-manager'); ?></th>
+                        <th><?php _e('Target Score', 'voxel-bulk-manager'); ?></th>
+                        <th><?php _e('Actions', 'voxel-bulk-manager'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($post_types as $post_type => $post_type_data): ?>
+                        <?php 
+                        $has_score = isset($post_types_with_score[$post_type]);
+                        $potential_max = $potential_max_scores[$post_type];
+                        $target = isset($target_scores[$post_type]) ? $target_scores[$post_type] : 0;
+                        ?>
+                        <tr data-post-type="<?php echo esc_attr($post_type); ?>">
+                            <td><?php echo esc_html($post_type_data['settings']['singular'] ?? $post_type); ?></td>
+                            <td>
+                                <?php if ($has_score): ?>
+                                    <span class="dashicons dashicons-yes-alt" style="color: #00a32a;"></span>
+                                <?php else: ?>
+                                    <span class="dashicons dashicons-no-alt" style="color: #d63638;"></span> 
+                                    <span class="description"><?php _e('Add a "score" field to enable scoring', 'voxel-bulk-manager'); ?></span>
+                                <?php endif; ?>
+                            </td>
+                            <td><?php echo esc_html($potential_max); ?></td>
+                            <td>
+                                <?php if ($has_score): ?>
+                                    <input type="number" class="target-score-input" value="<?php echo esc_attr($target); ?>" min="1" step="1">
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
+                            <td>
+                                <?php if ($has_score): ?>
+                                    <button class="button button-secondary update-target-score"><?php _e('Update', 'voxel-bulk-manager'); ?></button>
+                                <?php else: ?>
+                                    -
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+            
+            <div id="vbm-target-score-status-message"></div>
+        </div>
+        
+        <!-- Tab Content: Field Settings -->
+        <div id="field-settings" class="tab-content" style="display: none;">
+            <h3><?php _e('Field Scoring Manager', 'voxel-bulk-manager'); ?></h3>
+            <p><?php _e('Assign score values to fields. These values will be added to the post\'s score when the field is filled.', 'voxel-bulk-manager'); ?></p>
+            
+            <div class="vbm-filters">
+                <label for="post-type-filter"><?php _e('Post Type:', 'voxel-bulk-manager'); ?></label>
+                <select id="post-type-filter">
+                    <option value=""><?php _e('All Post Types', 'voxel-bulk-manager'); ?></option>
+                    <?php foreach ($post_types as $post_type => $data): ?>
+                        <option value="<?php echo esc_attr($post_type); ?>">
+                            <?php echo esc_html($data['settings']['singular'] ?? $post_type); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
             </div>
             
-            <script>
-            jQuery(document).ready(function($) {
-                // Add strings for the update button to the localized script object
-                if (typeof vbm_scoring !== 'undefined') {
-                    vbm_scoring.strings.update = '<?php _e('Update', 'voxel-bulk-manager'); ?>';
-                }
-            });
-            </script>
+            <table id="vbm-scoring-table" class="wp-list-table widefat fixed striped">
+                <thead>
+                    <tr>
+                        <th><?php _e('Post Type', 'voxel-bulk-manager'); ?></th>
+                        <th><?php _e('Field Key', 'voxel-bulk-manager'); ?></th>
+                        <th><?php _e('Label', 'voxel-bulk-manager'); ?></th>
+                        <th><?php _e('Score', 'voxel-bulk-manager'); ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                    foreach ($post_types as $post_type => $post_type_data):
+                        if (empty($post_type_data['fields'])) continue;
+                        
+                        foreach ($post_type_data['fields'] as $field):
+                            // Skip UI step, HTML fields, and score field
+                            if (in_array($field['type'], ['ui-step', 'ui-html']) || $field['key'] === 'score') continue;
+                            
+                            // Extract score from CSS class
+                            $score = $this->extract_score_from_css_class($field['css_class'] ?? '');
+                    ?>
+                    <tr data-post-type="<?php echo esc_attr($post_type); ?>" data-field-key="<?php echo esc_attr($field['key']); ?>">
+                        <td><?php echo esc_html($post_type_data['settings']['singular'] ?? $post_type); ?></td>
+                        <td><?php echo esc_html($field['key']); ?></td>
+                        <td><?php echo esc_html($field['label'] ?? ''); ?></td>
+                        <td class="editable" data-field-property="score"><?php echo esc_html($score); ?></td>
+                    </tr>
+                    <?php 
+                        endforeach;
+                    endforeach; 
+                    ?>
+                </tbody>
+            </table>
+            
+            <div id="vbm-field-score-status-message"></div>
         </div>
+        
+        <script>
+        jQuery(document).ready(function($) {
+            // Add strings for the update button to the localized script object
+            if (typeof vbm_scoring !== 'undefined') {
+                vbm_scoring.strings.update = '<?php _e('Update', 'voxel-bulk-manager'); ?>';
+            }
+        });
+        </script>
         <?php
     }
 }

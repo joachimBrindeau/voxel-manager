@@ -1,0 +1,82 @@
+/* Post Action Widget Styles */
+.vbm-post-action-widget {
+    margin: 20px 0;
+}
+
+.vbm-post-action-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+.vbm-post-dropdown {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    min-width: 200px;
+}
+
+/* Removed custom button styling - now using WP core */
+
+.vbm-post-action-button:disabled,
+.vbm-post-action-button.processing {
+    opacity: 0.7;
+    cursor: wait;
+}
+
+/* Messages */
+.vbm-post-action-messages {
+    margin-top: 10px;
+}
+
+.vbm-message {
+    padding: 10px;
+    border-radius: 0; /* Using WP styles */
+    margin-bottom: 10px;
+}
+
+.vbm-message-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.vbm-message-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.vbm-message-info {
+    background-color: #cce5ff;
+    color: #004085;
+    border: 1px solid #b8daff;
+}
+
+.post-action-error {
+    background-color: #fff4f4;
+    border-left: 4px solid #dc3232;
+    padding: 12px;
+    margin: 10px 0;
+    font-style: italic;
+    color: #444;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .vbm-post-action-container {
+        flex-direction: column;
+    }
+    
+    .vbm-post-dropdown {
+        width: 100%;
+    }
+    
+    .vbm-post-action-button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
